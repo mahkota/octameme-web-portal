@@ -1,7 +1,15 @@
 import './App.css';
-import { Outlet, Route, Routes } from 'react-router-dom';
+import { Link, Outlet, Route, Routes } from 'react-router-dom';
 import React from 'react';
 import Home from './pages/Home';
+import User from './pages/users/User';
+import AddUser from './pages/users/AddUser';
+import Meme from './pages/memes/Meme';
+import AddMeme from './pages/memes/AddMeme';
+import Template from './pages/memes/Template';
+import AddTemplate from './pages/memes/AddTemplate';
+import Subject from './pages/subjects/Subject';
+import Quiz from './pages/quizzes/Quiz';
 
 function Navigation() {
   return (
@@ -27,9 +35,9 @@ function Navigation() {
             <div className="d-flex">
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="/">
+                  <Link className="nav-link" to="/">
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item dropdown">
                   <a
@@ -47,14 +55,14 @@ function Navigation() {
                     aria-labelledby="userMgmtDropdown"
                   >
                     <li>
-                      <a className="dropdown-item" href="/">
+                      <Link className="dropdown-item" to="/users">
                         Users List
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="/">
+                      <Link className="dropdown-item" to="/users/add">
                         Create User
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li>
@@ -71,39 +79,39 @@ function Navigation() {
                   </a>
                   <ul className="dropdown-menu" aria-labelledby="memeDropdown">
                     <li>
-                      <a className="dropdown-item" href="/">
+                      <Link className="dropdown-item" to="/memes">
                         Memes List
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="/">
+                      <Link className="dropdown-item" to="/memes/add">
                         Create Meme
-                      </a>
+                      </Link>
                     </li>
                     <li>
                       <hr className="dropdown-divider" />
                     </li>
                     <li>
-                      <a className="dropdown-item" href="/">
-                        Templates
-                      </a>
+                      <Link className="dropdown-item" to="/templates">
+                        Templates List
+                      </Link>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="/">
+                      <Link className="dropdown-item" to="/templates/add">
                         Create Template
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="/">
+                  <Link className="nav-link" to="/subjects">
                     Subjects
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="/">
+                  <Link className="nav-link" to="/quizzes">
                     Quizzes
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -122,6 +130,19 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigation />}>
         <Route path="/" element={<Home />} />
+
+        <Route path="/users" element={<User />} />
+        <Route path="/users/add" element={<AddUser />} />
+
+        <Route path="/memes" element={<Meme />} />
+        <Route path="/memes/add" element={<AddMeme />} />
+
+        <Route path="/templates" element={<Template />} />
+        <Route path="/templates/add" element={<AddTemplate />} />
+
+        <Route path="/subjects" element={<Subject />} />
+
+        <Route path="/quizzes" element={<Quiz />} />
       </Route>
     </Routes>
   );
