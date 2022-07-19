@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import UsersTableWrapper from '../../components/UsersTableWrapper';
+import useFetchGet from '../../hooks/useFetchGet';
 
 export default function User() {
+  const [users, setUsers] = useState([]);
+  const USER_API_URL = 'https://octameme-api.herokuapp.com/users';
+
+  const [getUserError, getUserLoading, getUserData] = useFetchGet(USER_API_URL);
+
+  useEffect(() => {
+    if (!getUserError && !getUserLoading) {
+      setUsers(getUserData);
+    }
+  }, [getUserError, getUserLoading, getUserData]);
+
   return (
     <>
       <div className="px-0 py-5">
@@ -12,7 +24,7 @@ export default function User() {
         </button>
       </div>
       <div>
-        <UsersTableWrapper />
+        <UsersTableWrapper users={users} getUserLoading={getUserLoading} />
       </div>
     </>
   );

@@ -1,7 +1,10 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import UserItem from './UserItem';
 
-export default function UsersTableWrapper() {
+export default function UsersTableWrapper(props) {
+  const { users, getUserLoading } = props;
+
   return (
     <table className="table table-bordered table-hover">
       <thead>
@@ -14,29 +17,16 @@ export default function UsersTableWrapper() {
         </tr>
       </thead>
       <tbody className="table-group-divider">
-        <tr>
-          <th scope="row">1</th>
-          <td>fach.mkt@gmail.com</td>
-          <td>Admin</td>
-          <td>-</td>
-          <td>
-            <button type="button" className="btn btn-sm btn-danger">
-              <span className="fa-solid fa-trash" aria-hidden="true" />
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>johndoe@mail.com</td>
-          <td>Teacher</td>
-          <td>-</td>
-          <td>
-            <button type="button" className="btn btn-sm btn-danger">
-              <span className="fa-solid fa-trash" aria-hidden="true" />
-            </button>
-          </td>
-        </tr>
-        <UserItem />
+        {users.map((user, index) => (
+          <UserItem user={user} index={index + 1} />
+        ))}
+        {getUserLoading ? (
+          <tr>
+            <td colSpan="5">
+              <i>Loading...</i>
+            </td>
+          </tr>
+        ) : null}
       </tbody>
     </table>
   );
