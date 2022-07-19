@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   return (
@@ -15,9 +16,9 @@ export default function Home() {
                 <p className="card-text">
                   Manage teachers and users of the bot.
                 </p>
-                <a href="/" className="btn btn-sm btn-primary">
+                <Link className="btn btn-sm btn-primary" to="/users">
                   View Users
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -26,12 +27,12 @@ export default function Home() {
               <div className="card-body">
                 <h5 className="card-title">Meme</h5>
                 <p className="card-text">View memes and its templates.</p>
-                <a href="/" className="btn btn-sm btn-primary">
+                <Link className="btn btn-sm btn-primary" to="/memes">
                   View Memes
-                </a>
-                <a href="/" className="btn btn-sm btn-primary ms-2">
+                </Link>
+                <Link className="btn btn-sm btn-primary ms-2" to="/templates">
                   View Templates
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -40,9 +41,9 @@ export default function Home() {
               <div className="card-body">
                 <h5 className="card-title">Subjects</h5>
                 <p className="card-text">See existing or create subjects.</p>
-                <a href="/" className="btn btn-sm btn-primary">
+                <Link className="btn btn-sm btn-primary" to="/subjects">
                   View Subjects
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -51,9 +52,9 @@ export default function Home() {
               <div className="card-body">
                 <h5 className="card-title">Quizzes</h5>
                 <p className="card-text">See quizzes and its leaderboard.</p>
-                <a href="/" className="btn btn-sm btn-primary">
+                <Link className="btn btn-sm btn-primary" to="/quizzes">
                   View Quizzes
-                </a>
+                </Link>
               </div>
             </div>
           </div>
