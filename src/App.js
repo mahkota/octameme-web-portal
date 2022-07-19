@@ -1,6 +1,8 @@
 import './App.css';
 import { Link, Outlet, Route, Routes } from 'react-router-dom';
 import React from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Home from './pages/Home';
 import User from './pages/users/User';
 import AddUser from './pages/users/AddUser';
@@ -119,6 +121,18 @@ function Navigation() {
         </div>
       </nav>
       <div className="container">
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        <ToastContainer />
         <Outlet />
       </div>
     </>
@@ -126,13 +140,25 @@ function Navigation() {
 }
 
 function App() {
+  const handleToast = (message, type) => {
+    if (type === 'success') {
+      toast.success(message);
+    }
+    if (type === 'error') {
+      toast.error(message);
+    }
+  };
+
   return (
     <Routes>
       <Route path="/" element={<Navigation />}>
         <Route path="/" element={<Home />} />
 
         <Route path="/users" element={<User />} />
-        <Route path="/users/add" element={<AddUser />} />
+        <Route
+          path="/users/add"
+          element={<AddUser handleToast={handleToast} />}
+        />
 
         <Route path="/memes" element={<Meme />} />
         <Route path="/memes/add" element={<AddMeme />} />
