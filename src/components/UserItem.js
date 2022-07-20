@@ -2,7 +2,7 @@
 import React from 'react';
 
 export default function UserItem(props) {
-  const { user, index } = props;
+  const { user, index, handleFetchPost } = props;
   let elevation;
 
   switch (user.elevation) {
@@ -27,7 +27,13 @@ export default function UserItem(props) {
       <td>{elevation}</td>
       <td>-</td>
       <td>
-        <button type="button" className="btn btn-sm btn-danger">
+        <button
+          type="button"
+          className="btn btn-sm btn-danger"
+          onClick={() => {
+            handleFetchPost(user.id);
+          }}
+        >
           <span className="fa-solid fa-trash" aria-hidden="true" />
         </button>
       </td>

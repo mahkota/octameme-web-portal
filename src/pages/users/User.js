@@ -1,9 +1,12 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import UsersTableWrapper from '../../components/UsersTableWrapper';
 import useFetchGet from '../../hooks/useFetchGet';
 
-export default function User() {
+export default function User(props) {
+  const { handleToast } = props;
+
   const [users, setUsers] = useState([]);
   const USER_API_URL = 'https://octameme-api.herokuapp.com/users';
 
@@ -15,6 +18,26 @@ export default function User() {
     }
   }, [getUserError, getUserLoading, getUserData]);
 
+  const handleFetchPost = (id) => {
+    fetch(`${USER_API_URL}/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.error) {
+          handleToast(`Submission failed! Info: "${response.error}"`, 'error');
+        }
+        handleToast('Submission success!', 'success');
+      })
+      .catch((e) =>
+        handleToast(`Submission failed! Info: "${e.message}"`, 'error')
+      );
+  };
+
   return (
     <>
       <div className="px-0 py-5">
@@ -25,7 +48,11 @@ export default function User() {
         </Link>
       </div>
       <div>
-        <UsersTableWrapper users={users} getUserLoading={getUserLoading} />
+        <UsersTableWrapper
+          users={users}
+          getUserLoading={getUserLoading}
+          handleFetchPost={handleFetchPost}
+        />
       </div>
     </>
   );

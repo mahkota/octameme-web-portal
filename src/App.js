@@ -154,7 +154,7 @@ function App() {
       <Route path="/" element={<Navigation />}>
         <Route path="/" element={<Home />} />
 
-        <Route path="/users" element={<User />} />
+        <Route path="/users" element={<User handleToast={handleToast} />} />
         <Route
           path="/users/add"
           element={<AddUser handleToast={handleToast} />}

@@ -3,7 +3,7 @@ import React from 'react';
 import UserItem from './UserItem';
 
 export default function UsersTableWrapper(props) {
-  const { users, getUserLoading } = props;
+  const { users, getUserLoading, handleFetchPost } = props;
 
   return (
     <table className="table table-bordered table-hover">
@@ -18,7 +18,11 @@ export default function UsersTableWrapper(props) {
       </thead>
       <tbody className="table-group-divider">
         {users.map((user, index) => (
-          <UserItem user={user} index={index + 1} />
+          <UserItem
+            user={user}
+            index={index + 1}
+            handleFetchPost={handleFetchPost}
+          />
         ))}
         {getUserLoading ? (
           <tr>

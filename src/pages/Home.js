@@ -13,9 +13,7 @@ export default function Home() {
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">User Management</h5>
-                <p className="card-text">
-                  Manage teachers and users of the bot.
-                </p>
+                <p className="card-text">Manage users of the bot.</p>
                 <Link className="btn btn-sm btn-primary" to="/users">
                   View Users
                 </Link>
