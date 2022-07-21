@@ -8,7 +8,7 @@ export default function AddUser(props) {
 
   const [email, setEmail] = useState('');
   const [elevation, setElevation] = useState('1');
-  const USER_API_URL = 'https://octameme-api.herokuapp.com/users';
+  const USER_API_URL = 'https://octameme-api.glitch.me/users';
 
   const handleSelectChange = (e) => {
     const { value } = e.target;

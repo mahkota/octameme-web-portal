@@ -4,7 +4,7 @@ import useFetchGet from '../../hooks/useFetchGet';
 
 export default function Subject() {
   const [subjects, setSubjects] = useState([]);
-  const SUBJECT_API_URL = 'https://octameme-api.herokuapp.com/subjects';
+  const SUBJECT_API_URL = 'https://octameme-api.glitch.me/subjects';
 
   const [getSubjectError, getSubjectLoading, getSubjectData] =
     useFetchGet(SUBJECT_API_URL);

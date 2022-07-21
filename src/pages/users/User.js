@@ -8,7 +8,7 @@ export default function User(props) {
   const { handleToast } = props;
 
   const [users, setUsers] = useState([]);
-  const USER_API_URL = 'https://octameme-api.herokuapp.com/users';
+  const USER_API_URL = 'https://octameme-api.glitch.me/users';
 
   const [getUserError, getUserLoading, getUserData] = useFetchGet(USER_API_URL);
 
