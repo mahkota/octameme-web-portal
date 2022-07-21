@@ -2,7 +2,7 @@
 import React from 'react';
 
 export default function UserItem(props) {
-  const { user, index, handleFetchPost } = props;
+  const { user, handleFetchDelete } = props;
   let elevation;
 
   switch (user.elevation) {
@@ -22,7 +22,7 @@ export default function UserItem(props) {
 
   return (
     <tr>
-      <th scope="row">{index}</th>
+      <th scope="row">{user.id}</th>
       <td>{user.email}</td>
       <td>{elevation}</td>
       <td>-</td>
@@ -31,7 +31,7 @@ export default function UserItem(props) {
           type="button"
           className="btn btn-sm btn-danger"
           onClick={() => {
-            handleFetchPost(user.id);
+            handleFetchDelete(user);
           }}
         >
           <span className="fa-solid fa-trash" aria-hidden="true" />

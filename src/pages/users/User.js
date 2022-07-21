@@ -18,8 +18,8 @@ export default function User(props) {
     }
   }, [getUserError, getUserLoading, getUserData]);
 
-  const handleFetchPost = (id) => {
-    fetch(`${USER_API_URL}/${id}`, {
+  const handleFetchDelete = (user) => {
+    fetch(`${USER_API_URL}/${user.id}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -29,12 +29,20 @@ export default function User(props) {
       .then((response) => response.json())
       .then((response) => {
         if (response.error) {
-          handleToast(`Submission failed! Info: "${response.error}"`, 'error');
+          handleToast(
+            `Deletion of ${user.email} failed! Info: "${response.error}"`,
+            'error'
+          );
+        } else {
+          handleToast(`Deleted ${user.email}!`, 'success');
+          setUsers(users.filter((u) => u.id !== user.id));
         }
-        handleToast('Submission success!', 'success');
       })
       .catch((e) =>
-        handleToast(`Submission failed! Info: "${e.message}"`, 'error')
+        handleToast(
+          `Deletion of ${user.email} failed! Info: "${e.message}"`,
+          'error'
+        )
       );
   };
 
@@ -51,7 +59,7 @@ export default function User(props) {
         <UsersTableWrapper
           users={users}
           getUserLoading={getUserLoading}
-          handleFetchPost={handleFetchPost}
+          handleFetchDelete={handleFetchDelete}
         />
       </div>
     </>

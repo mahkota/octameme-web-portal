@@ -3,13 +3,13 @@ import React from 'react';
 import UserItem from './UserItem';
 
 export default function UsersTableWrapper(props) {
-  const { users, getUserLoading, handleFetchPost } = props;
+  const { users, getUserLoading, handleFetchDelete } = props;
 
   return (
     <table className="table table-bordered table-hover">
       <thead>
         <tr>
-          <th scope="col">#</th>
+          <th scope="col">ID</th>
           <th scope="col">Email</th>
           <th scope="col">Elevation</th>
           <th scope="col">Line ID</th>
@@ -20,8 +20,8 @@ export default function UsersTableWrapper(props) {
         {users.map((user, index) => (
           <UserItem
             user={user}
-            index={index + 1}
-            handleFetchPost={handleFetchPost}
+            index={index}
+            handleFetchDelete={handleFetchDelete}
           />
         ))}
         {getUserLoading ? (
