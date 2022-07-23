@@ -18,9 +18,9 @@ function Navigation() {
     <>
       <nav className="navbar navbar-dark navbar-expand-lg bg-dark">
         <div className="container">
-          <a className="navbar-brand" href="/">
+          <Link className="navbar-brand" to="/">
             OctaMeme Dashboard
-          </a>
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -132,7 +132,6 @@ function Navigation() {
           draggable
           pauseOnHover
         />
-        <ToastContainer />
         <Outlet />
       </div>
     </>

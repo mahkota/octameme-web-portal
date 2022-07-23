@@ -33,8 +33,9 @@ export default function AddUser(props) {
       .then((response) => {
         if (response.error) {
           handleToast(`Submission failed! Info: "${response.error}"`, 'error');
+        } else {
+          handleToast('Submission success!', 'success');
         }
-        handleToast('Submission success!', 'success');
       })
       .catch((e) =>
         handleToast(`Submission failed! Info: "${e.message}"`, 'error')
