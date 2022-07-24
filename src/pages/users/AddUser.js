@@ -72,37 +72,6 @@ export default function AddUser(props) {
       );
   };
 
-  const handleAuth = async () => {
-    const authUrl = `${USER_API_URL}?elevation=0&elevation=1&email=${emailAuth}`;
-
-    fetch(authUrl)
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.error) {
-          handleToast(
-            `Validating credentials failed! Info: "${response.error}"`,
-            'error'
-          );
-        }
-        if (
-          response.length === 0 ||
-          !bcrypt.compareSync(passwordAuth, response[0].password)
-        ) {
-          return false;
-        }
-
-        return true;
-      })
-      .catch((e) => {
-        handleToast(
-          `Validating credentials failed! Info: "${e.message}"`,
-          'error'
-        );
-
-        return false;
-      });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -132,18 +101,37 @@ export default function AddUser(props) {
       return;
     }
 
-    const submittedData = {
-      elevation: parseInt(elevation, 10),
-      email,
-      name,
-      password: bcrypt.hashSync(password, bcrypt.genSaltSync(12)),
-    };
+    const authUrl = `${USER_API_URL}?elevation=0&elevation=1&email=${emailAuth}`;
 
-    if (handleAuth()) {
-      handleFetchPost(USER_API_URL, submittedData);
-    } else {
-      handleToast(`Invalid credentials!`, 'error');
-    }
+    fetch(authUrl)
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.error) {
+          handleToast(
+            `Validating credentials failed! Info: "${response.error}"`,
+            'error'
+          );
+        }
+        if (
+          response.length === 0 ||
+          !bcrypt.compareSync(passwordAuth, response[0].password)
+        ) {
+          handleToast(`Invalid credentials!`, 'error');
+        } else {
+          handleFetchPost(USER_API_URL, {
+            elevation: parseInt(elevation, 10),
+            email,
+            name,
+            password: bcrypt.hashSync(password, bcrypt.genSaltSync(12)),
+          });
+        }
+      })
+      .catch((err) =>
+        handleToast(
+          `Validating credentials failed! Info: "${err.message}"`,
+          'error'
+        )
+      );
   };
 
   return (

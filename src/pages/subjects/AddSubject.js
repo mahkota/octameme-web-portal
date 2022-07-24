@@ -61,7 +61,18 @@ export default function AddSubject(props) {
       );
   };
 
-  const handleAuth = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!(title !== '' || description !== '')) {
+      handleToast(
+        'Submission failed! Please make sure that you have filled the form correctly.',
+        'error'
+      );
+
+      return;
+    }
+
     const authUrl = `${USER_API_URL}&email=${email}`;
 
     fetch(authUrl)
@@ -77,45 +88,22 @@ export default function AddSubject(props) {
           response.length === 0 ||
           !bcrypt.compareSync(password, response[0].password)
         ) {
-          return false;
+          handleToast(`Invalid credentials!`, 'error');
+        } else {
+          handleFetchPost(SUBJECT_API_URL, {
+            createdAt: new Date().toJSON(),
+            createdBy: response[0].name,
+            description,
+            title,
+          });
         }
-
-        return true;
       })
-      .catch((e) => {
+      .catch((err) =>
         handleToast(
-          `Validating credentials failed! Info: "${e.message}"`,
+          `Validating credentials failed! Info: "${err.message}"`,
           'error'
-        );
-
-        return false;
-      });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!(title !== '' || description !== '')) {
-      handleToast(
-        'Submission failed! Please make sure that you have filled the form correctly.',
-        'error'
+        )
       );
-
-      return;
-    }
-
-    const submittedData = {
-      createdAt: new Date().toJSON(),
-      createdBy: email,
-      description,
-      title,
-    };
-
-    if (handleAuth()) {
-      handleFetchPost(SUBJECT_API_URL, submittedData);
-    } else {
-      handleToast(`Invalid credentials!`, 'error');
-    }
   };
 
   return (
