@@ -12,6 +12,7 @@ import Template from './pages/memes/Template';
 import AddTemplate from './pages/memes/AddTemplate';
 import Subject from './pages/subjects/Subject';
 import Quiz from './pages/quizzes/Quiz';
+import AddSubject from './pages/subjects/AddSubject';
 
 function Navigation() {
   return (
@@ -165,7 +166,14 @@ function App() {
         <Route path="/templates" element={<Template />} />
         <Route path="/templates/add" element={<AddTemplate />} />
 
-        <Route path="/subjects" element={<Subject />} />
+        <Route
+          path="/subjects"
+          element={<Subject handleToast={handleToast} />}
+        />
+        <Route
+          path="/subjects/add"
+          element={<AddSubject handleToast={handleToast} />}
+        />
 
         <Route path="/quizzes" element={<Quiz />} />
       </Route>

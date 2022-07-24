@@ -2,7 +2,7 @@
 import React from 'react';
 
 export default function UserItem(props) {
-  const { user, handleFetchDelete } = props;
+  const { user, handleFetchDelete, index } = props;
   let elevation;
 
   switch (user.elevation) {
@@ -22,7 +22,7 @@ export default function UserItem(props) {
 
   return (
     <tr>
-      <th scope="row">{user.id}</th>
+      <th scope="row">{index + 1}</th>
       <td>{user.email}</td>
       <td>{elevation}</td>
       <td>-</td>

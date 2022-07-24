@@ -9,7 +9,7 @@ export default function UsersTableWrapper(props) {
     <table className="table table-bordered table-hover">
       <thead>
         <tr>
-          <th scope="col">ID</th>
+          <th scope="col">#</th>
           <th scope="col">Email</th>
           <th scope="col">Elevation</th>
           <th scope="col">Line ID</th>
