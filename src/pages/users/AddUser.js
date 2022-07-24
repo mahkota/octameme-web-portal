@@ -15,7 +15,7 @@ export default function AddUser(props) {
   const [elevation, setElevation] = useState('1');
   const [emailAuth, setEmailAuth] = useState('');
   const [passwordAuth, setPasswordAuth] = useState('');
-  const USER_API_URL = 'https://octameme-api.glitch.me';
+  const USER_API_URL = 'https://octameme-api.glitch.me/users';
 
   const handleSelectChange = (e) => {
     const { value } = e.target;
