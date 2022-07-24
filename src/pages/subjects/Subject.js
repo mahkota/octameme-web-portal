@@ -8,7 +8,7 @@ export default function Subject(props) {
   const { handleToast } = props;
 
   const [subjects, setSubjects] = useState([]);
-  const SUBJECT_API_URL = 'http://localhost:4000/subjects';
+  const SUBJECT_API_URL = 'https://octameme-api.glitch.me/subjects';
 
   const [getSubjectError, getSubjectLoading, getSubjectData] =
     useFetchGet(SUBJECT_API_URL);

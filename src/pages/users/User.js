@@ -8,7 +8,7 @@ export default function User(props) {
   const { handleToast } = props;
 
   const [users, setUsers] = useState([]);
-  const USER_API_URL = 'http://localhost:4000/users';
+  const USER_API_URL = 'https://octameme-api.glitch.me';
 
   const [getUserError, getUserLoading, getUserData] = useFetchGet(USER_API_URL);
 

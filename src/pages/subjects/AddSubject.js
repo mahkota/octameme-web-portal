@@ -2,37 +2,31 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
+
 const bcrypt = require('bcryptjs');
 
 export default function AddSubject(props) {
   const { handleToast } = props;
 
-  //   const [title, setTitle] = useState('');
-  //   const [description, setDescription] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  //   const [users, setUsers] = useState([]);
-
-  const USER_API_URL = 'http://localhost:4000/users?elevation=0&elevation=1';
-  //   const SUBJECT_API_URL = 'http://localhost:4000/subjects';
-
-  //   const handleSelectChange = (e) => {
-  //     const { value } = e.target;
-  //     setCreator(value);
-  //   };
+  const USER_API_URL =
+    'https://octameme-api.glitch.me/users?elevation=0&elevation=1';
+  const SUBJECT_API_URL = 'https://octameme-api.glitch.me/subjects';
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
 
     switch (id) {
       case 'inputTitle':
-        // setTitle(value);
+        setTitle(value);
         break;
       case 'inputDesc':
-        // setDescription(value);
+        setDescription(value);
         break;
       case 'inputEmail':
         setEmail(value);
@@ -45,29 +39,29 @@ export default function AddSubject(props) {
     }
   };
 
-  //   const handleFetchPost = (url, submittedData) => {
-  //     fetch(url, {
-  //       method: 'POST',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(submittedData),
-  //     })
-  //       .then((response) => response.json())
-  //       .then((response) => {
-  //         if (response.error) {
-  //           handleToast(`Submission failed! Info: "${response.error}"`, 'error');
-  //         } else {
-  //           handleToast('Submission success!', 'success');
-  //         }
-  //       })
-  //       .catch((e) =>
-  //         handleToast(`Submission failed! Info: "${e.message}"`, 'error')
-  //       );
-  //   };
+  const handleFetchPost = (url, submittedData) => {
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(submittedData),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.error) {
+          handleToast(`Submission failed! Info: "${response.error}"`, 'error');
+        } else {
+          handleToast('Submission success!', 'success');
+        }
+      })
+      .catch((e) =>
+        handleToast(`Submission failed! Info: "${e.message}"`, 'error')
+      );
+  };
 
-  const handleFetchGet = () => {
+  const handleAuth = async () => {
     const authUrl = `${USER_API_URL}&email=${email}`;
 
     fetch(authUrl)
@@ -83,34 +77,45 @@ export default function AddSubject(props) {
           response.length === 0 ||
           !bcrypt.compareSync(password, response[0].password)
         ) {
-          handleToast(`Invalid credentials!`, 'error');
-        } else {
-          handleToast('Validation success!', 'success');
+          return false;
         }
+
+        return true;
       })
-      .catch((e) =>
+      .catch((e) => {
         handleToast(
           `Validating credentials failed! Info: "${e.message}"`,
           'error'
-        )
-      );
+        );
+
+        return false;
+      });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // const createdAt = new Date().toJSON();
+    if (!(title !== '' || description !== '')) {
+      handleToast(
+        'Submission failed! Please make sure that you have filled the form correctly.',
+        'error'
+      );
 
-    handleFetchGet();
+      return;
+    }
 
-    // const submittedData = {
-    //   title,
-    //   description,
-    //   createdAt,
-    //   createdBy: '',
-    // };
+    const submittedData = {
+      createdAt: new Date().toJSON(),
+      createdBy: email,
+      description,
+      title,
+    };
 
-    // handleFetchPost(SUBJECT_API_URL, submittedData);
+    if (handleAuth()) {
+      handleFetchPost(SUBJECT_API_URL, submittedData);
+    } else {
+      handleToast(`Invalid credentials!`, 'error');
+    }
   };
 
   return (
@@ -126,11 +131,11 @@ export default function AddSubject(props) {
         <div className="card-body">
           <form method="post" onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="inputEmail" className="form-label mb-0">
+              <label htmlFor="inputTitle" className="form-label mb-0">
                 Title
               </label>
               <input
-                type="email"
+                type="text"
                 className="form-control"
                 id="inputTitle"
                 defaultValue=""
