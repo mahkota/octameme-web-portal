@@ -7,7 +7,7 @@ export default function SubjectItem(props) {
   const dateTimeFormatted = moment(subject.createdAt).format('LLLL');
 
   return (
-    <tr>
+    <tr key={index}>
       <th scope="row">{index}</th>
       <td>{subject.title}</td>
       <td>{subject.description}</td>

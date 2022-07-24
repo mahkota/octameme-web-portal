@@ -10,6 +10,7 @@ export default function UsersTableWrapper(props) {
       <thead>
         <tr>
           <th scope="col">#</th>
+          <th scope="col">Name</th>
           <th scope="col">Email</th>
           <th scope="col">Elevation</th>
           <th scope="col">Line ID</th>
@@ -26,7 +27,7 @@ export default function UsersTableWrapper(props) {
         ))}
         {getUserLoading ? (
           <tr>
-            <td colSpan="5">
+            <td colSpan="6">
               <i>Loading...</i>
             </td>
           </tr>

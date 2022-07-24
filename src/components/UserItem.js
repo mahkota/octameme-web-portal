@@ -21,8 +21,9 @@ export default function UserItem(props) {
   }
 
   return (
-    <tr>
+    <tr key={index}>
       <th scope="row">{index + 1}</th>
+      <td>{user.name}</td>
       <td>{user.email}</td>
       <td>{elevation}</td>
       <td>-</td>
