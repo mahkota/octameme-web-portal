@@ -160,7 +160,7 @@ function App() {
           element={<AddUser handleToast={handleToast} />}
         />
 
-        <Route path="/memes" element={<Meme />} />
+        <Route path="/memes" element={<Meme handleToast={handleToast} />} />
         <Route path="/memes/add" element={<AddMeme />} />
 
         <Route path="/templates" element={<Template />} />
