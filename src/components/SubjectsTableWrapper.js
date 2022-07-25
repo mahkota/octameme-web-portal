@@ -3,7 +3,7 @@ import React from 'react';
 import SubjectItem from './SubjectItem';
 
 export default function SubjectsTableWrapper(props) {
-  const { subjects, getSubjectLoading } = props;
+  const { subjects, getSubjectLoading, handleFetchDelete } = props;
 
   return (
     <table className="table table-bordered table-hover">
@@ -19,7 +19,11 @@ export default function SubjectsTableWrapper(props) {
       </thead>
       <tbody className="table-group-divider">
         {subjects.map((subject, index) => (
-          <SubjectItem subject={subject} index={index + 1} />
+          <SubjectItem
+            subject={subject}
+            index={index}
+            handleFetchDelete={handleFetchDelete}
+          />
         ))}
         {getSubjectLoading ? (
           <tr>

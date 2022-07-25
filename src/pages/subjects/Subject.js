@@ -26,6 +26,34 @@ export default function Subject(props) {
     }
   }, [getSubjectError, getSubjectLoading, getSubjectData]);
 
+  const handleFetchDelete = (subject) => {
+    fetch(`${SUBJECT_API_URL}/${subject.id}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.error) {
+          handleToast(
+            `Deletion of "${subject.title}" failed! Info: "${response.error}"`,
+            'error'
+          );
+        } else {
+          handleToast(`Deleted "${subject.title}"!`, 'success');
+          setSubjects(subjects.filter((s) => s.id !== subject.id));
+        }
+      })
+      .catch((e) =>
+        handleToast(
+          `Deletion of "${subject.email}" failed! Info: "${e.message}"`,
+          'error'
+        )
+      );
+  };
+
   return (
     <>
       <div className="px-0 py-5">
@@ -39,6 +67,7 @@ export default function Subject(props) {
         <SubjectsTableWrapper
           subjects={subjects}
           getSubjectLoading={getSubjectLoading}
+          handleFetchDelete={handleFetchDelete}
         />
       </div>
     </>
