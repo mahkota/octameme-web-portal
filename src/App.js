@@ -15,6 +15,7 @@ import Quiz from './pages/quizzes/Quiz';
 import AddSubject from './pages/subjects/AddSubject';
 import Score from './pages/quizzes/scores/Score';
 import Question from './pages/quizzes/questions/Question';
+import AddQuestion from './pages/quizzes/questions/AddQuestion';
 
 function Navigation() {
   return (
@@ -202,6 +203,10 @@ function App() {
         <Route path="/scores/:quizId" element={<Score />} />
 
         <Route path="/questions/:quizId" element={<Question />} />
+        <Route
+          path="/questions/add/:quizId"
+          element={<AddQuestion handleToast={handleToast} />}
+        />
 
         <Route
           path="/answers/:quizId/:userId"
