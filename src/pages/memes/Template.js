@@ -28,7 +28,6 @@ export default function Template(props) {
 
   return (
     <>
-      {console.log(templates)}
       <div className="px-0 py-5">
         <h1>Meme Templates</h1>
         <Link to="/templates/add" className="btn btn-sm btn-outline-primary">

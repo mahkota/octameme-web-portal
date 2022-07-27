@@ -1,5 +1,5 @@
 import './App.css';
-import { Link, Outlet, Route, Routes } from 'react-router-dom';
+import { Link, Outlet, Route, Routes, useParams } from 'react-router-dom';
 import React from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,6 +13,7 @@ import AddTemplate from './pages/memes/AddTemplate';
 import Subject from './pages/subjects/Subject';
 import Quiz from './pages/quizzes/Quiz';
 import AddSubject from './pages/subjects/AddSubject';
+import Score from './pages/quizzes/scores/Score';
 
 function Navigation() {
   return (
@@ -185,8 +186,24 @@ function App() {
         />
 
         <Route path="/quizzes" element={<Quiz />} />
+
+        <Route path="/scores" element={<Score />} />
+        <Route path="/scores/:id" element={<Score />} />
+
+        <Route path="/answers/:quizId/:userId" element={<Answer />} />
       </Route>
     </Routes>
+  );
+}
+
+function Answer() {
+  const { quizId, userId } = useParams();
+
+  return (
+    <div>
+      <h3>{quizId}</h3>
+      <h3>{userId}</h3>
+    </div>
   );
 }
 
