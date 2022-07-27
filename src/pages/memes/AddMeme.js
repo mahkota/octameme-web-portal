@@ -225,7 +225,9 @@ export default function AddMeme(props) {
                 defaultValue={subjectId}
                 onChange={(e) => handleSelectChange(e)}
               >
-                <option value="-1">Select</option>
+                <option value="-1" disabled>
+                  Select
+                </option>
                 {subjects.map((sub) => (
                   <option value={sub.id}>{sub.title}</option>
                 ))}
