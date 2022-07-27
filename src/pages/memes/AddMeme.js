@@ -2,25 +2,97 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import useFetchGet from '../../hooks/useFetchGet';
+
+const bcrypt = require('bcryptjs');
 
 export default function AddMeme(props) {
   const { handleToast } = props;
 
-  // const [title, setTitle] = useState('');
-  // const [description, setDescription] = useState('');
-  // const [imageUrl, setImageUrl] = useState('');
-  // const [imageId, setImageId] = useState(-1);
-  // const [subjectId, setSubjectId] = useState(-1);
-  // const [sendTime, setSendTime] = useState(-1);
-  const [image, setImage] = useState(null);
+  const MEME_API_URL = 'https://octameme-api.glitch.me/memes';
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [subjectId, setSubjectId] = useState(-1);
+  const [sendTime, setSendTime] = useState(new Date());
 
-  const [subjects, setSubjects] = useState([]);
+  const USER_API_URL =
+    'https://octameme-api.glitch.me/users?elevation=0&elevation=1';
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const SUBJECT_API_URL = 'https://octameme-api.glitch.me/subjects';
-  // const IMAGE_API_URL = 'https://octameme-api.glitch.me/images';
+  const [subjects, setSubjects] = useState([]);
+
+  const IMAGE_API_URL = 'https://octameme-api.glitch.me/images';
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
+  const [imageId, setImageId] = useState(-1);
 
   const [getSubjectError, getSubjectLoading, getSubjectData] =
     useFetchGet(SUBJECT_API_URL);
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+
+    switch (id) {
+      case 'inputTitle':
+        setTitle(value);
+        break;
+      case 'inputDesc':
+        setDescription(value);
+        break;
+      case 'inputEmail':
+        setEmail(value);
+        break;
+      case 'inputPass':
+        setPassword(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleSelectChange = (e) => {
+    const { id, value } = e.target;
+
+    switch (id) {
+      case 'inputSubject':
+        setSubjectId(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleFetchPost = async (url, submittedData, context) => {
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(submittedData),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.error) {
+          handleToast(`${context} failed! Info: "${response.error}"`, 'error');
+        } else {
+          let extraMsg = '';
+          if (context === 'Image upload') {
+            setImageId(response.id);
+            extraMsg = ' You may continue to fill or submit form.';
+          }
+          handleToast(`${context} success!${extraMsg}`, 'success');
+        }
+      })
+      .catch((e) =>
+        handleToast(`${context} failed! Info: "${e.message}"`, 'error')
+      );
+  };
 
   useEffect(() => {
     if (!getSubjectError && !getSubjectLoading) {
@@ -33,74 +105,106 @@ export default function AddMeme(props) {
         'error'
       );
     }
-  }, [getSubjectError, getSubjectLoading, getSubjectData]);
+
+    if (imageUrl !== '') {
+      handleFetchPost(
+        IMAGE_API_URL,
+        {
+          createdAt: new Date().toJSON(),
+          url: imageUrl,
+        },
+        'Image upload'
+      );
+    }
+  }, [getSubjectError, getSubjectLoading, getSubjectData, imageUrl]);
 
   const handleFileChange = (e) => {
     const { files } = e.target;
     setImage(files[0]);
   };
 
-  // const handleFetchPost = (url, submittedData) => {
-  //   fetch(url, {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(submittedData),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       if (response.error) {
-  //         handleToast(`Submission failed! Info: "${response.error}"`, 'error');
-  //       } else {
-  //         handleToast('Submission success!', 'success');
-  //       }
-  //     })
-  //     .catch((e) =>
-  //       handleToast(`Submission failed! Info: "${e.message}"`, 'error')
-  //     );
-  // };
+  const handleFileUpload = async () => {
+    const body = new FormData();
+    body.set('key', '32ccaf8fc011097a556cd9d12c0bcdbd');
+    body.append('image', image);
 
-  const handleFileUpload = () => {
-    fetch(
-      `https://api.imgbb.com/1/upload?key=32ccaf8fc011097a556cd9d12c0bcdbd`,
-      {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-        body: JSON.stringify({
-          image,
-        }),
-      }
-    )
+    axios({
+      method: 'post',
+      url: 'https://api.imgbb.com/1/upload',
+      data: body,
+    })
+      .then((res) => {
+        setImageUrl(res.data.data.image.url);
+      })
+      .catch((err) =>
+        handleToast(`Image upload failed! Info: "${err.message}"`, 'error')
+      );
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (
+      subjectId === -1 ||
+      title === '' ||
+      description === '' ||
+      imageId === -1
+    ) {
+      handleToast(
+        'Submission failed! Please make sure that you have uploaded the image and filled the form correctly.',
+        'error'
+      );
+
+      return;
+    }
+
+    const authUrl = `${USER_API_URL}&email=${email}`;
+
+    fetch(authUrl)
       .then((response) => response.json())
       .then((response) => {
         if (response.error) {
           handleToast(
-            `Image upload failed! Info: "${response.error}"`,
+            `Validating credentials failed! Info: "${response.error}"`,
             'error'
           );
+        }
+        if (
+          response.length === 0 ||
+          !bcrypt.compareSync(password, response[0].password)
+        ) {
+          handleToast(`Invalid credentials!`, 'error');
         } else {
-          handleToast('Image upload success!', 'success');
-          // handleFetchPost(IMAGE_API_URL, {
-          //   url: response.
-          // })
-          console.log(response);
+          handleFetchPost(
+            MEME_API_URL,
+            {
+              createdAt: new Date().toJSON(),
+              createdBy: response[0].name,
+              description,
+              imageId,
+              isSent: false,
+              sendAt: sendTime.toJSON(),
+              subjectId,
+              updatedAt: '',
+              updatedBy: '',
+              title,
+            },
+            'Meme submission'
+          );
         }
       })
-      .catch((e) =>
-        handleToast(`Image upload failed! Info: "${e.message}"`, 'error')
+      .catch((err) =>
+        handleToast(
+          `Validating credentials failed! Info: "${err.message}"`,
+          'error'
+        )
       );
   };
 
   return (
     <>
-      {console.log(subjects)}
-      {console.log(image)}
+      {console.log(imageUrl)}
+      {console.log(imageId)}
       <div className="px-0 py-5">
         <h1>Add New Meme</h1>
         <Link to="/memes" className="btn btn-sm btn-outline-primary">
@@ -108,69 +212,18 @@ export default function AddMeme(props) {
           <span className="ms-2">Go Back</span>
         </Link>
       </div>
-      <div className="card">
+      <div className="card mb-5">
         <div className="card-body">
-          <form
-            method="post"
-            // onSubmit={handleSubmit}
-          >
-            {/* <div className="mb-3">
-              <label htmlFor="inputName" className="form-label mb-0">
-                Name
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="inputName"
-                defaultValue=""
-                onChange={handleInputChange}
-              />
-            </div>
+          <form method="post" onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="inputEmail" className="form-label mb-0">
-                Email address
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id="inputEmail"
-                defaultValue=""
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="inputPass" className="form-label mb-0">
-                Password
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Password"
-                id="inputPass"
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="inputPassConfirm" className="form-label mb-0">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Password"
-                id="inputPassConfirm"
-                onChange={handleInputChange}
-              />
-            </div> */}
-            <div className="mb-3">
-              <label htmlFor="inputElevation" className="form-label mb-0">
+              <label htmlFor="inputSubject" className="form-label mb-0">
                 Subjects
               </label>
               <select
                 className="form-select"
-                id="inputElevation"
-                defaultValue="1"
-                onChange={(e) => console.log(e)}
+                id="inputSubject"
+                defaultValue={subjectId}
+                onChange={(e) => handleSelectChange(e)}
               >
                 <option value="-1">Select</option>
                 {subjects.map((sub) => (
@@ -186,8 +239,8 @@ export default function AddMeme(props) {
                 type="text"
                 className="form-control"
                 id="inputTitle"
-                defaultValue=""
-                // onChange={handleInputChange}
+                defaultValue={title}
+                onChange={handleInputChange}
               />
             </div>
             <div className="mb-3">
@@ -197,52 +250,43 @@ export default function AddMeme(props) {
               <textarea
                 className="form-control"
                 id="inputDesc"
-                defaultValue=""
-                // onChange={handleInputChange}
+                defaultValue={description}
+                onChange={handleInputChange}
               />
             </div>
-            <div className="card mb-3">
-              <div className="card-header text-bg-primary">Image Upload</div>
-              <div className="card-body text-bg-secondary">
-                <h5 className="card-title">Select image file:</h5>
-                <div className="mb-3">
-                  <input
-                    className="form-control"
-                    type="file"
-                    id="formFile"
-                    accept="image/png, image/jpeg"
-                    onChange={handleFileChange}
-                  />
-                </div>
-                {/* <div className="row mb-3">
-                  <div className="col">
-                    <input
-                      type="email"
-                      className="form-control form-control-sm"
-                      placeholder="Email"
-                      id="inputEmailAuth"
-                      // onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="col">
-                    <input
-                      type="password"
-                      className="form-control form-control-sm"
-                      placeholder="Password"
-                      id="inputPassAuth"
-                      // onChange={handleInputChange}
-                    />
-                  </div>
-                </div> */}
-                <button
-                  type="button"
-                  className="btn btn-light"
-                  onClick={handleFileUpload}
-                >
-                  <i className="fa-solid fa-upload" />
-                  <span className="ms-2">Upload</span>
-                </button>
-              </div>
+            <label htmlFor="inputImage" className="form-label mb-0">
+              Image
+            </label>
+            <div className="input-group mb-3" id="inputImage">
+              <input
+                className="form-control"
+                type="file"
+                id="formFile"
+                accept="image/png, image/jpeg"
+                onChange={handleFileChange}
+                disabled={imageId !== -1}
+              />
+              <button
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={handleFileUpload}
+                disabled={imageId !== -1}
+              >
+                <i className="fa-solid fa-upload" />
+                <span className="ms-2">Upload</span>
+              </button>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="inputSendAt" className="form-label mb-0">
+                Send At
+              </label>
+              <DatePicker
+                id="inputSendAt"
+                selected={sendTime}
+                onChange={(date) => setSendTime(date)}
+                showTimeSelect
+                dateFormat="Pp"
+              />
             </div>
             <div className="card">
               <div className="card-header text-bg-danger">
@@ -258,8 +302,8 @@ export default function AddMeme(props) {
                       type="email"
                       className="form-control form-control-sm"
                       placeholder="Email"
-                      id="inputEmailAuth"
-                      // onChange={handleInputChange}
+                      id="inputEmail"
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="col">
@@ -267,8 +311,8 @@ export default function AddMeme(props) {
                       type="password"
                       className="form-control form-control-sm"
                       placeholder="Password"
-                      id="inputPassAuth"
-                      // onChange={handleInputChange}
+                      id="inputPass"
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
