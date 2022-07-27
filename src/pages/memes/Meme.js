@@ -10,6 +10,7 @@ export default function Meme(props) {
   const [memes, setMemes] = useState([]);
   const MEME_API_URL =
     'https://octameme-api.glitch.me/memes?_expand=subject&_expand=image';
+  const DELETE_MEME_API_URL = 'https://octameme-api.glitch.me/memes';
 
   const [getMemeError, getMemeLoading, getMemeData] = useFetchGet(MEME_API_URL);
 
@@ -22,6 +23,34 @@ export default function Meme(props) {
       handleToast(`Failed to fetch users! Info: "${getMemeError}"`, 'error');
     }
   }, [getMemeError, getMemeLoading, getMemeData]);
+
+  const handleFetchDelete = (meme) => {
+    fetch(`${DELETE_MEME_API_URL}/${meme.id}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.error) {
+          handleToast(
+            `Deletion of ${meme.title} failed! Info: "${response.error}"`,
+            'error'
+          );
+        } else {
+          handleToast(`Deleted ${meme.title}!`, 'success');
+          setMemes(memes.filter((m) => m.id !== meme.id));
+        }
+      })
+      .catch((e) =>
+        handleToast(
+          `Deletion of ${meme.title} failed! Info: "${e.message}"`,
+          'error'
+        )
+      );
+  };
 
   return (
     <>
@@ -37,7 +66,7 @@ export default function Meme(props) {
         <MemesTableWrapper
           memes={memes}
           getMemeLoading={getMemeLoading}
-          handleFetchDelete={null}
+          handleFetchDelete={handleFetchDelete}
         />
       </div>
     </>
