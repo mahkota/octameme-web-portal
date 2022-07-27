@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 export default function SubjectItem(props) {
   const { subject, index, handleFetchDelete } = props;
@@ -14,15 +15,29 @@ export default function SubjectItem(props) {
       <td>{dateTimeFormatted}</td>
       <td>{subject.createdBy}</td>
       <td>
-        <button
-          type="button"
-          className="btn btn-sm btn-danger"
-          onClick={() => {
-            handleFetchDelete(subject);
-          }}
-        >
-          <span className="fa-solid fa-trash" aria-hidden="true" />
-        </button>
+        <div className="btn-group" role="group">
+          <Link
+            to={`/teachers/${subject.id}`}
+            className="btn btn-sm btn-outline-primary"
+          >
+            See Teachers
+          </Link>
+          <Link
+            to={`/students/${subject.id}`}
+            className="btn btn-sm btn-outline-success"
+          >
+            See Students
+          </Link>
+          <button
+            type="button"
+            className="btn btn-sm btn-danger"
+            onClick={() => {
+              handleFetchDelete(subject);
+            }}
+          >
+            <span className="fa-solid fa-trash" aria-hidden="true" />
+          </button>
+        </div>
       </td>
     </tr>
   );

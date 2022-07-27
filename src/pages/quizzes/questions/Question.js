@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import QuestionsTableWrapper from '../../../components/QuestionsTableWrapper';
 import useFetchGet from '../../../hooks/useFetchGet';
-// import MemesTableWrapper from '../../components/MemesTableWrapper';
-// import useFetchGet from '../../hooks/useFetchGet';
 
 export default function Question(props) {
   const { handleToast } = props;
@@ -44,7 +42,7 @@ export default function Question(props) {
           <span className="ms-2">Go Back</span>
         </Link>
         <Link
-          to="/questions/add/1"
+          to={`/questions/add/${quizId}`}
           className="btn btn-sm btn-outline-primary ms-2"
         >
           <i className="fa-solid fa-plus" />
