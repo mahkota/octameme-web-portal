@@ -11,7 +11,6 @@ export default function ScoreItem(props) {
     <tr key={index}>
       <th scope="row">{index + 1}</th>
       <td>{score.user.name}</td>
-      <td>{score.quiz.title}</td>
       <td>{score.nQuestions}</td>
       <td>{score.nCorrectAnswers}</td>
       <td>{score.finalScore}</td>

@@ -6,12 +6,12 @@ import useFetchGet from '../../../hooks/useFetchGet';
 
 export default function Score(props) {
   const { handleToast } = props;
-  const { id } = useParams();
+  const { quizId } = useParams();
+
+  const [titleOptInfo, setTitleOptInfo] = useState('');
 
   const [scores, setScores] = useState([]);
-  const SCORE_API_URL = `https://octameme-api.glitch.me/scores${
-    id ? `?quizId=${id}` : ''
-  }&_expand=user&_expand=quiz&_sort=finalScore&_order=desc`;
+  const SCORE_API_URL = `https://octameme-api.glitch.me/scores?quizId=${quizId}&_expand=user&_expand=quiz&_sort=finalScore&_order=desc`;
 
   const [getScoreError, getScoreLoading, getScoreData] =
     useFetchGet(SCORE_API_URL);
@@ -19,6 +19,10 @@ export default function Score(props) {
   useEffect(() => {
     if (!getScoreError && !getScoreLoading) {
       setScores(getScoreData);
+
+      if (getScoreData.length > 0) {
+        setTitleOptInfo(` for "${getScoreData[0].quiz.title}"`);
+      }
     }
 
     if (getScoreError) {
@@ -29,7 +33,7 @@ export default function Score(props) {
   return (
     <>
       <div className="px-0 py-5">
-        <h1>Scores</h1>
+        <h1>{`Leaderboard${titleOptInfo}`}</h1>
       </div>
       <div>
         <ScoresTableWrapper scores={scores} getScoreLoading={getScoreLoading} />

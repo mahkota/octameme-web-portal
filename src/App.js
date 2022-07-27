@@ -14,6 +14,7 @@ import Subject from './pages/subjects/Subject';
 import Quiz from './pages/quizzes/Quiz';
 import AddSubject from './pages/subjects/AddSubject';
 import Score from './pages/quizzes/scores/Score';
+import Question from './pages/quizzes/questions/Question';
 
 function Navigation() {
   return (
@@ -140,6 +141,16 @@ function Navigation() {
   );
 }
 
+function PassiveNavigation() {
+  return (
+    <nav className="navbar navbar-dark navbar-expand-lg bg-dark">
+      <div className="container">
+        <div className="navbar-brand">OctaMeme Dashboard</div>
+      </div>
+    </nav>
+  );
+}
+
 function App() {
   const handleToast = (message, type) => {
     if (type === 'success') {
@@ -187,22 +198,61 @@ function App() {
 
         <Route path="/quizzes" element={<Quiz />} />
 
-        <Route path="/scores" element={<Score />} />
-        <Route path="/scores/:id" element={<Score />} />
+        {/* <Route path="/scores" element={<Score />} /> */}
+        <Route path="/scores/:quizId" element={<Score />} />
 
-        <Route path="/answers/:quizId/:userId" element={<Answer />} />
+        <Route path="/questions/:quizId" element={<Question />} />
+
+        <Route
+          path="/answers/:quizId/:userId"
+          element={<AnswerPlaceholder />}
+        />
       </Route>
+
+      <Route path="*" element={<NotFound />} />
+
+      <Route path="/student-portal" element={<StudentPortalPlaceholder />} />
     </Routes>
   );
 }
 
-function Answer() {
+function NotFound() {
+  return (
+    <>
+      <PassiveNavigation />
+      <div className="container">
+        <div className="px-0 py-5">
+          <h1>Page Not Found</h1>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function StudentPortalPlaceholder() {
+  return (
+    <>
+      <PassiveNavigation />
+      <div className="container">
+        <div className="px-0 py-5">
+          <h1>Register Student</h1>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function AnswerPlaceholder() {
   const { quizId, userId } = useParams();
 
   return (
-    <div>
-      <h3>{quizId}</h3>
-      <h3>{userId}</h3>
+    <div className="container">
+      <div className="px-0 py-5">
+        <h1>Answers for Quiz X from Student Y</h1>
+        <p>
+          Quiz ID: {quizId}, User ID: {userId}
+        </p>
+      </div>
     </div>
   );
 }
