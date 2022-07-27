@@ -166,8 +166,14 @@ function App() {
           element={<AddMeme handleToast={handleToast} />}
         />
 
-        <Route path="/templates" element={<Template />} />
-        <Route path="/templates/add" element={<AddTemplate />} />
+        <Route
+          path="/templates"
+          element={<Template handleToast={handleToast} />}
+        />
+        <Route
+          path="/templates/add"
+          element={<AddTemplate handleToast={handleToast} />}
+        />
 
         <Route
           path="/subjects"

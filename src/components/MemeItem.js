@@ -15,7 +15,17 @@ export default function MemeItem(props) {
       <td>{meme.description}</td>
       <td>
         <a href={meme.image.url} target="_blank" rel="noreferrer">
-          <img src={meme.image.url} height="200" alt={meme.title} />
+          <img
+            src={meme.image.url}
+            height="200"
+            alt={meme.title}
+            style={{ border: '1px solid #555' }}
+          />
+        </a>
+      </td>
+      <td>
+        <a href={meme.referenceLink} target="_blank" rel="noreferrer">
+          {meme.referenceLink}
         </a>
       </td>
       <td>{meme.subject.title}</td>

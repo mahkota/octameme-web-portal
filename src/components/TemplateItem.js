@@ -12,9 +12,9 @@ export default function TemplateItem(props) {
       <td>{template.title}</td>
       <td>{template.description}</td>
       <td>
-        <a href={template.imageUrl} target="_blank" rel="noreferrer">
+        <a href={template.templateImageUrl} target="_blank" rel="noreferrer">
           <img
-            src={template.imageUrl}
+            src={template.templateImageUrl}
             height="200"
             alt={template.title}
             style={{ border: '1px solid #555' }}

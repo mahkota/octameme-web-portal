@@ -13,6 +13,7 @@ export default function MemesTableWrapper(props) {
           <th scope="col">Title</th>
           <th scope="col">Description</th>
           <th scope="col">Image</th>
+          <th scope="col">Reference</th>
           <th scope="col">Subject</th>
           <th scope="col">Is Sent</th>
           <th scope="col">Send At</th>
@@ -31,7 +32,7 @@ export default function MemesTableWrapper(props) {
         ))}
         {getMemeLoading ? (
           <tr>
-            <td colSpan="10">
+            <td colSpan="11">
               <i>Loading...</i>
             </td>
           </tr>
