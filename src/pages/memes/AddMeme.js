@@ -203,8 +203,6 @@ export default function AddMeme(props) {
 
   return (
     <>
-      {console.log(imageUrl)}
-      {console.log(imageId)}
       <div className="px-0 py-5">
         <h1>Add New Meme</h1>
         <Link to="/memes" className="btn btn-sm btn-outline-primary">

@@ -20,7 +20,7 @@ export default function Meme(props) {
     }
 
     if (getMemeError) {
-      handleToast(`Failed to fetch users! Info: "${getMemeError}"`, 'error');
+      handleToast(`Failed to fetch memes! Info: "${getMemeError}"`, 'error');
     }
   }, [getMemeError, getMemeLoading, getMemeData]);
 
@@ -55,7 +55,6 @@ export default function Meme(props) {
   return (
     <>
       <div className="px-0 py-5">
-        {console.log(memes)}
         <h1>Memes</h1>
         <Link to="/memes/add" className="btn btn-sm btn-outline-primary">
           <i className="fa-solid fa-plus" />
