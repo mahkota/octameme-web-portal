@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import TeacherItem from './TeacherItem';
+import StudentItem from './StudentItem';
 
-export default function TeachersTableWrapper(props) {
-  const { teachers, getTeacherLoading, handleFetchDelete } = props;
+export default function StudentsTableWrapper(props) {
+  const { students, getStudentsLoading, handleFetchDelete } = props;
 
   return (
     <table className="table table-bordered table-hover">
@@ -17,14 +17,14 @@ export default function TeachersTableWrapper(props) {
         </tr>
       </thead>
       <tbody className="table-group-divider">
-        {teachers.map((teacher, index) => (
-          <TeacherItem
-            teacher={teacher}
+        {students.map((student, index) => (
+          <StudentItem
+            student={student}
             index={index}
             handleFetchDelete={handleFetchDelete}
           />
         ))}
-        {getTeacherLoading ? (
+        {getStudentsLoading ? (
           <tr>
             <td colSpan="5">
               <i>Loading...</i>

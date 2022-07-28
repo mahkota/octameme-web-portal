@@ -1,48 +1,48 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import TeachersTableWrapper from '../../../components/TeachersTableWrapper';
+import StudentsTableWrapper from '../../../components/StudentsTableWrapper';
 import useFetchGet from '../../../hooks/useFetchGet';
 
-export default function Teacher(props) {
+export default function Student(props) {
   const { handleToast } = props;
   const { subjectId } = useParams();
 
   const [titleOptInfo, setTitleOptInfo] = useState('');
 
-  const [teachers, setTeachers] = useState([]);
-  const TEACHER_API_URL = `https://octameme-api.glitch.me/teachers?subjectId=${subjectId}&_expand=subject&_expand=user`;
+  const [students, setStudents] = useState([]);
+  const TEACHER_API_URL = `https://octameme-api.glitch.me/students?subjectId=${subjectId}&_expand=subject&_expand=user`;
 
-  const [getTeacherError, getTeacherLoading, getTeacherData] =
+  const [getStudentError, getStudentLoading, getStudentData] =
     useFetchGet(TEACHER_API_URL);
 
   useEffect(() => {
-    if (!getTeacherError && !getTeacherLoading) {
-      setTeachers(getTeacherData);
+    if (!getStudentError && !getStudentLoading) {
+      setStudents(getStudentData);
 
-      if (getTeacherData.length > 0) {
-        setTitleOptInfo(` for "${getTeacherData[0].subject.title}"`);
+      if (getStudentData.length > 0) {
+        setTitleOptInfo(` from "${getStudentData[0].subject.title}"`);
       }
     }
 
-    if (getTeacherError) {
+    if (getStudentError) {
       handleToast(
-        `Failed to fetch teacher! Info: "${getTeacherError}"`,
+        `Failed to fetch teacher! Info: "${getStudentError}"`,
         'error'
       );
     }
-  }, [getTeacherError, getTeacherLoading, getTeacherData]);
+  }, [getStudentError, getStudentLoading, getStudentData]);
 
   return (
     <>
       <div className="px-0 py-5">
-        <h1>{`Teachers${titleOptInfo}`}</h1>
+        <h1>{`Students${titleOptInfo}`}</h1>
         <Link to="/subjects" className="btn btn-sm btn-outline-primary">
           <i className="fa-solid fa-arrow-left" />
           <span className="ms-2">Go Back</span>
         </Link>
         <Link
-          to={`/teachers/add/${subjectId}`}
+          to={`/students/add/${subjectId}`}
           className="btn btn-sm btn-outline-primary ms-2"
         >
           <i className="fa-solid fa-plus" />
@@ -50,9 +50,9 @@ export default function Teacher(props) {
         </Link>
       </div>
       <div>
-        <TeachersTableWrapper
-          teachers={teachers}
-          getTeacherLoading={getTeacherLoading}
+        <StudentsTableWrapper
+          students={students}
+          getStudentLoading={getStudentLoading}
           handleFetchDelete={null}
         />
       </div>
