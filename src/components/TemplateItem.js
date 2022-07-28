@@ -15,7 +15,7 @@ export default function TemplateItem(props) {
         <a href={template.templateImageUrl} target="_blank" rel="noreferrer">
           <img
             src={template.templateImageUrl}
-            height="200"
+            width="200"
             alt={template.title}
             style={{ border: '1px solid #555' }}
           />
@@ -25,7 +25,7 @@ export default function TemplateItem(props) {
         <a href={template.exampleImageUrl} target="_blank" rel="noreferrer">
           <img
             src={template.exampleImageUrl}
-            height="200"
+            width="200"
             alt={template.exampleImageUrl}
             style={{ border: '1px solid #555' }}
           />

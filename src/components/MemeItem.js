@@ -17,7 +17,7 @@ export default function MemeItem(props) {
         <a href={meme.image.url} target="_blank" rel="noreferrer">
           <img
             src={meme.image.url}
-            height="200"
+            width="200"
             alt={meme.title}
             style={{ border: '1px solid #555' }}
           />
