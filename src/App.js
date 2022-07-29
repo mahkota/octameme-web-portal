@@ -221,14 +221,13 @@ function App() {
 
         <Route path="/quizzes" element={<Quiz />} />
 
-        {/* <Route path="/scores" element={<Score />} /> */}
-        <Route path="/scores/:quizId" element={<Score />} />
-
         <Route path="/questions" element={<Question />} />
         <Route
           path="/questions/add"
           element={<AddQuestion handleToast={handleToast} />}
         />
+
+        <Route path="/scores" element={<Score />} />
 
         <Route path="/answers" element={<AnswerPlaceholder />} />
       </Route>

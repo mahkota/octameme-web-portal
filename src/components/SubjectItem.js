@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 
 export default function SubjectItem(props) {
-  const { subject, index, handleFetchDelete } = props;
+  const { subject, index } = props;
   const dateTimeFormatted = moment(subject.createdAt).format('LLLL');
 
   return (
@@ -28,7 +28,7 @@ export default function SubjectItem(props) {
           >
             See Students
           </Link>
-          <button
+          {/* <button
             type="button"
             className="btn btn-sm btn-danger"
             onClick={() => {
@@ -36,7 +36,7 @@ export default function SubjectItem(props) {
             }}
           >
             <span className="fa-solid fa-trash" aria-hidden="true" />
-          </button>
+          </button> */}
         </div>
       </td>
     </tr>

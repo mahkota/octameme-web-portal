@@ -11,7 +11,7 @@ export default function ScoresTableWrapper(props) {
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">User</th>
+          <th scope="col">Student</th>
           <th scope="col">n Questions</th>
           <th scope="col">n Correct Answer</th>
           <th scope="col">Final Score</th>

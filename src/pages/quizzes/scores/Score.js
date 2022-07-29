@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import ScoresTableWrapper from '../../../components/ScoresTableWrapper';
 import useFetchGet from '../../../hooks/useFetchGet';
 
 export default function Score(props) {
   const { handleToast } = props;
-  const { quizId } = useParams();
+  const [searchParams] = useSearchParams();
+  const quizId = searchParams.get('quizId');
 
   const [titleOptInfo, setTitleOptInfo] = useState('');
 

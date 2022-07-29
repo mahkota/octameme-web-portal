@@ -27,7 +27,7 @@ export default function QuizItem(props) {
             See Questions
           </Link>
           <Link
-            to={`/scores/${quiz.id}`}
+            to={`/scores?quizId=${quiz.id}`}
             className="btn btn-sm btn-outline-success"
           >
             See Scores
@@ -38,6 +38,7 @@ export default function QuizItem(props) {
             onClick={() => {
               handleFetchDelete(quiz);
             }}
+            disabled
           >
             <span className="fa-solid fa-trash" aria-hidden="true" />
           </button>
