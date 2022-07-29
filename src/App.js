@@ -21,6 +21,7 @@ import Student from './pages/subjects/students/Student';
 import AddTeacher from './pages/subjects/teachers/AddTeacher';
 import AddStudent from './pages/subjects/students/AddStudent';
 import AddQuiz from './pages/quizzes/AddQuiz';
+import StudentRegistration from './pages/student_portal/StudentRegistration';
 
 function Navigation() {
   return (
@@ -149,11 +150,27 @@ function Navigation() {
 
 function PassiveNavigation() {
   return (
-    <nav className="navbar navbar-dark navbar-expand-lg bg-dark">
+    <>
+      <nav className="navbar navbar-dark navbar-expand-lg bg-dark">
+        <div className="container">
+          <div className="navbar-brand">OctaMeme Dashboard</div>
+        </div>
+      </nav>
       <div className="container">
-        <div className="navbar-brand">OctaMeme Dashboard</div>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        <Outlet />
       </div>
-    </nav>
+    </>
   );
 }
 
@@ -234,38 +251,39 @@ function App() {
         <Route path="/answers" element={<AnswerPlaceholder />} />
       </Route>
 
-      <Route path="*" element={<NotFound />} />
+      <Route path="/" element={<PassiveNavigation />}>
+        <Route
+          path="/student-registration"
+          element={<StudentRegistration handleToast={handleToast} />}
+        />
+      </Route>
 
-      <Route path="/student-portal" element={<StudentPortalPlaceholder />} />
+      <Route path="*" element={<PassiveNavigation />}>
+        <Route path="*" element={<NotFound />} />
+      </Route>
     </Routes>
   );
 }
 
 function NotFound() {
   return (
-    <>
-      <PassiveNavigation />
-      <div className="container">
-        <div className="px-0 py-5">
-          <h1>Page Not Found</h1>
-        </div>
+    <div className="container">
+      <div className="px-0 py-5">
+        <h1>Page Not Found</h1>
       </div>
-    </>
+    </div>
   );
 }
 
-function StudentPortalPlaceholder() {
-  return (
-    <>
-      <PassiveNavigation />
-      <div className="container">
-        <div className="px-0 py-5">
-          <h1>Register Student</h1>
-        </div>
-      </div>
-    </>
-  );
-}
+// function StudentPortalPlaceholder() {
+//   return (
+//     <div className="container">
+//       <div className="px-0 py-5">
+//         <h1>Register Student</h1>
+//       </div>
+//     </div>
+//   );
+// }
 
 function AnswerPlaceholder() {
   const [searchParams] = useSearchParams();
