@@ -26,7 +26,7 @@ export default function UserItem(props) {
       <td>{user.name}</td>
       <td>{user.email}</td>
       <td>{elevation}</td>
-      <td>-</td>
+      {/* <td>-</td> */}
       <td>
         <button
           type="button"

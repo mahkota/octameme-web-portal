@@ -20,6 +20,7 @@ import Teacher from './pages/subjects/teachers/Teacher';
 import Student from './pages/subjects/students/Student';
 import AddTeacher from './pages/subjects/teachers/AddTeacher';
 import AddStudent from './pages/subjects/students/AddStudent';
+import AddQuiz from './pages/quizzes/AddQuiz';
 
 function Navigation() {
   return (
@@ -220,6 +221,7 @@ function App() {
         />
 
         <Route path="/quizzes" element={<Quiz />} />
+        <Route path="/quizzes/add" element={<AddQuiz />} />
 
         <Route path="/questions" element={<Question />} />
         <Route

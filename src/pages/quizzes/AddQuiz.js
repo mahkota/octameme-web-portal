@@ -2,21 +2,20 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useFetchGet from '../../hooks/useFetchGet';
 
 const bcrypt = require('bcryptjs');
 
-export default function AddMeme(props) {
+export default function AddQuiz(props) {
   const { handleToast } = props;
 
-  const MEME_API_URL = 'https://octameme-api.glitch.me/memes';
+  const QUIZ_API_URL = 'https://octameme-api.glitch.me/quizzes';
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
   const [subjectId, setSubjectId] = useState(-1);
-  const [sendTime, setSendTime] = useState(new Date());
+  const [startAt, setStartAt] = useState(new Date());
+  const [endAt, setEndAt] = useState(new Date());
 
   const USER_API_URL =
     'https://octameme-api.glitch.me/users?elevation=0&elevation=1';
@@ -25,11 +24,6 @@ export default function AddMeme(props) {
 
   const SUBJECT_API_URL = 'https://octameme-api.glitch.me/subjects';
   const [subjects, setSubjects] = useState([]);
-
-  const IMAGE_API_URL = 'https://octameme-api.glitch.me/images';
-  const [image, setImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState('');
-  const [imageId, setImageId] = useState(-1);
 
   const [getSubjectError, getSubjectLoading, getSubjectData] =
     useFetchGet(SUBJECT_API_URL);
@@ -40,9 +34,6 @@ export default function AddMeme(props) {
     switch (id) {
       case 'inputTitle':
         setTitle(value);
-        break;
-      case 'inputDesc':
-        setDescription(value);
         break;
       case 'inputEmail':
         setEmail(value);
@@ -81,12 +72,7 @@ export default function AddMeme(props) {
         if (response.error) {
           handleToast(`${context} failed! Info: "${response.error}"`, 'error');
         } else {
-          let extraMsg = '';
-          if (context === 'Image upload') {
-            setImageId(response.id);
-            extraMsg = ' You may continue to fill or submit form.';
-          }
-          handleToast(`${context} success!${extraMsg}`, 'success');
+          handleToast(`${context} success!`, 'success');
         }
       })
       .catch((e) =>
@@ -105,51 +91,12 @@ export default function AddMeme(props) {
         'error'
       );
     }
-
-    if (imageUrl !== '') {
-      handleFetchPost(
-        IMAGE_API_URL,
-        {
-          createdAt: new Date().toJSON(),
-          url: imageUrl,
-        },
-        'Image upload'
-      );
-    }
-  }, [getSubjectError, getSubjectLoading, getSubjectData, imageUrl]);
-
-  const handleFileChange = (e) => {
-    const { files } = e.target;
-    setImage(files[0]);
-  };
-
-  const handleFileUpload = async () => {
-    const body = new FormData();
-    body.set('key', '32ccaf8fc011097a556cd9d12c0bcdbd');
-    body.append('image', image);
-
-    axios({
-      method: 'post',
-      url: 'https://api.imgbb.com/1/upload',
-      data: body,
-    })
-      .then((res) => {
-        setImageUrl(res.data.data.image.url);
-      })
-      .catch((err) =>
-        handleToast(`Image upload failed! Info: "${err.message}"`, 'error')
-      );
-  };
+  }, [getSubjectError, getSubjectLoading, getSubjectData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      subjectId === -1 ||
-      title === '' ||
-      description === '' ||
-      imageId === -1
-    ) {
+    if (subjectId === -1 || title === '') {
       handleToast(
         'Submission failed! Please make sure that you have uploaded the image and filled the form correctly.',
         'error'
@@ -176,20 +123,16 @@ export default function AddMeme(props) {
           handleToast(`Invalid credentials!`, 'error');
         } else {
           handleFetchPost(
-            MEME_API_URL,
+            QUIZ_API_URL,
             {
               createdAt: new Date().toJSON(),
               createdBy: response[0].name,
-              description,
-              imageId,
-              isSent: false,
-              sendAt: sendTime.toJSON(),
+              endAt,
+              startAt,
               subjectId,
-              updatedAt: '',
-              updatedBy: '',
               title,
             },
-            'Meme submission'
+            'Quiz submission'
           );
         }
       })
@@ -204,8 +147,8 @@ export default function AddMeme(props) {
   return (
     <>
       <div className="px-0 py-5">
-        <h1>Add New Meme</h1>
-        <Link to="/memes" className="btn btn-sm btn-outline-primary">
+        <h1>Add New Quiz</h1>
+        <Link to="/quizzes" className="btn btn-sm btn-outline-primary">
           <i className="fa-solid fa-arrow-left" />
           <span className="ms-2">Go Back</span>
         </Link>
@@ -226,7 +169,7 @@ export default function AddMeme(props) {
               >
                 {getSubjectLoading ? (
                   <option value="-1" disabled>
-                    <i>Loading...</i>
+                    Loading...
                   </option>
                 ) : (
                   <option value="-1" disabled>
@@ -254,46 +197,25 @@ export default function AddMeme(props) {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="inputDesc" className="form-label mb-0">
-                Description
-              </label>
-              <textarea
-                className="form-control"
-                id="inputDesc"
-                defaultValue={description}
-                onChange={handleInputChange}
-              />
-            </div>
-            <label htmlFor="inputImage" className="form-label mb-0">
-              Image
-            </label>
-            <div className="input-group mb-3" id="inputImage">
-              <input
-                className="form-control"
-                type="file"
-                id="formFile"
-                accept="image/png, image/jpeg"
-                onChange={handleFileChange}
-                disabled={imageId !== -1}
-              />
-              <button
-                type="button"
-                className="btn btn-outline-secondary"
-                onClick={handleFileUpload}
-                disabled={imageId !== -1}
-              >
-                <i className="fa-solid fa-upload" />
-                <span className="ms-2">Upload</span>
-              </button>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="inputSendAt" className="form-label mb-0">
-                Send At
+              <label htmlFor="inputStartAt" className="form-label mb-0">
+                Start At
               </label>
               <DatePicker
-                id="inputSendAt"
-                selected={sendTime}
-                onChange={(date) => setSendTime(date)}
+                id="inputStartAt"
+                selected={startAt}
+                onChange={(ds) => setStartAt(ds)}
+                showTimeSelect
+                dateFormat="Pp"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="inputEndAt" className="form-label mb-0">
+                End At
+              </label>
+              <DatePicker
+                id="inputEntAt"
+                selected={endAt}
+                onChange={(de) => setEndAt(de)}
                 showTimeSelect
                 dateFormat="Pp"
               />

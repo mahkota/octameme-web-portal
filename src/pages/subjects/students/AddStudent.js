@@ -13,7 +13,8 @@ export default function AddStudent(props) {
   const subjectId = searchParams.get('subjectId');
 
   const STUDENT_API_URL = 'https://octameme-api.glitch.me/students';
-  const USER_API_URL = 'https://octameme-api.glitch.me/users?elevation=2';
+  const USER_API_URL =
+    'https://octameme-api.glitch.me/users?elevation=2&_embed=students';
   const USER_AUTH_API_URL =
     'https://octameme-api.glitch.me/users?elevation=0&elevation=1';
   const [users, setUsers] = useState([]);
@@ -133,7 +134,7 @@ export default function AddStudent(props) {
   return (
     <>
       <div className="px-0 py-5">
-        <h1>Add New Teacher</h1>
+        <h1>Add New Student</h1>
         <Link
           to={`/students?subjectId=${subjectId}`}
           className="btn btn-sm btn-outline-primary"

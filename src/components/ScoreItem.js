@@ -18,7 +18,7 @@ export default function ScoreItem(props) {
       <td>
         <Link
           to={`/answers?quizId=${score.quizId}&userId=${score.userId}`}
-          className="btn btn-sm btn-outline-primary"
+          className="btn btn-sm btn-outline-primary disabled"
         >
           See Answers
         </Link>
