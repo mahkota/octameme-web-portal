@@ -17,13 +17,13 @@ export default function SubjectItem(props) {
       <td>
         <div className="btn-group" role="group">
           <Link
-            to={`/teachers/${subject.id}`}
+            to={`/teachers?subjectId=${subject.id}`}
             className="btn btn-sm btn-outline-primary"
           >
             See Teachers
           </Link>
           <Link
-            to={`/students/${subject.id}`}
+            to={`/students?subjectId=${subject.id}`}
             className="btn btn-sm btn-outline-success"
           >
             See Students

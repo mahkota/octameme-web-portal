@@ -1,5 +1,5 @@
 import './App.css';
-import { Link, Outlet, Route, Routes, useParams } from 'react-router-dom';
+import { Link, Outlet, Route, Routes, useSearchParams } from 'react-router-dom';
 import React from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,6 +18,8 @@ import Question from './pages/quizzes/questions/Question';
 import AddQuestion from './pages/quizzes/questions/AddQuestion';
 import Teacher from './pages/subjects/teachers/Teacher';
 import Student from './pages/subjects/students/Student';
+import AddTeacher from './pages/subjects/teachers/AddTeacher';
+import AddStudent from './pages/subjects/students/AddStudent';
 
 function Navigation() {
   return (
@@ -200,13 +202,21 @@ function App() {
         />
 
         <Route
-          path="/teachers/:subjectId"
+          path="/teachers/"
           element={<Teacher handleToast={handleToast} />}
+        />
+        <Route
+          path="/teachers/add"
+          element={<AddTeacher handleToast={handleToast} />}
         />
 
         <Route
-          path="/students/:subjectId"
+          path="/students/"
           element={<Student handleToast={handleToast} />}
+        />
+        <Route
+          path="/students/add"
+          element={<AddStudent handleToast={handleToast} />}
         />
 
         <Route path="/quizzes" element={<Quiz />} />
@@ -214,16 +224,13 @@ function App() {
         {/* <Route path="/scores" element={<Score />} /> */}
         <Route path="/scores/:quizId" element={<Score />} />
 
-        <Route path="/questions/:quizId" element={<Question />} />
+        <Route path="/questions" element={<Question />} />
         <Route
-          path="/questions/add/:quizId"
+          path="/questions/add"
           element={<AddQuestion handleToast={handleToast} />}
         />
 
-        <Route
-          path="/answers/:quizId/:userId"
-          element={<AnswerPlaceholder />}
-        />
+        <Route path="/answers" element={<AnswerPlaceholder />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
@@ -260,7 +267,11 @@ function StudentPortalPlaceholder() {
 }
 
 function AnswerPlaceholder() {
-  const { quizId, userId } = useParams();
+  const [searchParams] = useSearchParams();
+  const [quizId, userId] = [
+    searchParams.get('quizId'),
+    searchParams.get('userId'),
+  ];
 
   return (
     <div className="container">

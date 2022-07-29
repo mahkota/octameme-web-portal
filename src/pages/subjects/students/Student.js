@@ -1,20 +1,22 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import StudentsTableWrapper from '../../../components/StudentsTableWrapper';
 import useFetchGet from '../../../hooks/useFetchGet';
 
 export default function Student(props) {
   const { handleToast } = props;
-  const { subjectId } = useParams();
+
+  const [searchParams] = useSearchParams();
+  const subjectId = searchParams.get('subjectId');
 
   const [titleOptInfo, setTitleOptInfo] = useState('');
 
   const [students, setStudents] = useState([]);
-  const TEACHER_API_URL = `https://octameme-api.glitch.me/students?subjectId=${subjectId}&_expand=subject&_expand=user`;
+  const STUDENT_API_URL = `https://octameme-api.glitch.me/students?subjectId=${subjectId}&_expand=subject&_expand=user`;
 
   const [getStudentError, getStudentLoading, getStudentData] =
-    useFetchGet(TEACHER_API_URL);
+    useFetchGet(STUDENT_API_URL);
 
   useEffect(() => {
     if (!getStudentError && !getStudentLoading) {
@@ -42,7 +44,7 @@ export default function Student(props) {
           <span className="ms-2">Go Back</span>
         </Link>
         <Link
-          to={`/students/add/${subjectId}`}
+          to={`/students/add?subjectId=${subjectId}`}
           className="btn btn-sm btn-outline-primary ms-2"
         >
           <i className="fa-solid fa-plus" />

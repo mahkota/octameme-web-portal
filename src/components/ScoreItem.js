@@ -17,7 +17,7 @@ export default function ScoreItem(props) {
       <td>{createdAtFormatted}</td>
       <td>
         <Link
-          to={`/answers/${score.quizId}/${score.userId}`}
+          to={`/answers?quizId=${score.quizId}&userId=${score.userId}`}
           className="btn btn-sm btn-outline-primary"
         >
           See Answers

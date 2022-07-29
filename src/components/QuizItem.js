@@ -21,7 +21,7 @@ export default function QuizItem(props) {
       <td>
         <div className="btn-group" role="group">
           <Link
-            to={`/questions/${quiz.id}`}
+            to={`/questions?quizId=${quiz.id}`}
             className="btn btn-sm btn-outline-primary"
           >
             See Questions

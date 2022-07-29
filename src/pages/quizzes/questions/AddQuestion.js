@@ -1,14 +1,15 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const bcrypt = require('bcryptjs');
 
 export default function AddQuestion(props) {
   const { handleToast } = props;
-  const { quizId } = useParams();
+  const [searchParams] = useSearchParams();
+  const quizId = searchParams.get('quizId');
 
   const QUESTION_API_URL = 'https://octameme-api.glitch.me/questions';
   const [questionDetail, setQuestionDetail] = useState('');
@@ -159,7 +160,7 @@ export default function AddQuestion(props) {
       <div className="px-0 py-5">
         <h1>Add New Question</h1>
         <Link
-          to={`/questions/${quizId}`}
+          to={`/questions?quizId=${quizId}`}
           className="btn btn-sm btn-outline-primary"
         >
           <i className="fa-solid fa-arrow-left" />

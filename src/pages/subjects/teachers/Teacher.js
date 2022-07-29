@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import TeachersTableWrapper from '../../../components/TeachersTableWrapper';
 import useFetchGet from '../../../hooks/useFetchGet';
 
 export default function Teacher(props) {
   const { handleToast } = props;
-  const { subjectId } = useParams();
+
+  const [searchParams] = useSearchParams();
+  const subjectId = searchParams.get('subjectId');
 
   const [titleOptInfo, setTitleOptInfo] = useState('');
 
@@ -42,7 +44,7 @@ export default function Teacher(props) {
           <span className="ms-2">Go Back</span>
         </Link>
         <Link
-          to={`/teachers/add/${subjectId}`}
+          to={`/teachers/add?subjectId=${subjectId}`}
           className="btn btn-sm btn-outline-primary ms-2"
         >
           <i className="fa-solid fa-plus" />

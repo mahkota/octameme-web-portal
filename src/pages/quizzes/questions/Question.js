@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import QuestionsTableWrapper from '../../../components/QuestionsTableWrapper';
 import useFetchGet from '../../../hooks/useFetchGet';
 
 export default function Question(props) {
   const { handleToast } = props;
-  const { quizId } = useParams();
+  const [searchParams] = useSearchParams();
+  const quizId = searchParams.get('quizId');
 
   const [titleOptInfo, setTitleOptInfo] = useState('');
 
@@ -42,7 +43,7 @@ export default function Question(props) {
           <span className="ms-2">Go Back</span>
         </Link>
         <Link
-          to={`/questions/add/${quizId}`}
+          to={`/questions/add?quizId=${quizId}`}
           className="btn btn-sm btn-outline-primary ms-2"
         >
           <i className="fa-solid fa-plus" />
